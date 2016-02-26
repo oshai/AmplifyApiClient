@@ -1,4 +1,4 @@
-package com.outbrain
+package com.outbrain.amplify.api
 
 fun main(args : Array<String>) {
     val token = "42"

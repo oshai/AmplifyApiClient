@@ -1,4 +1,4 @@
-package com.outbrain;
+package com.outbrain.amplify.api;
 
 
 public class Example {
