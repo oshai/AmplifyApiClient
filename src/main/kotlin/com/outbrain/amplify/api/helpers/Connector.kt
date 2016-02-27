@@ -1,44 +1,31 @@
 package com.outbrain.amplify.api.helpers
 
+import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.GsonBuilder
-import com.outbrain.amplify.api.data.Marketer
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import com.github.salomonbrys.kotson.fromJson
 
 
-class Connector(token: String) {
-    companion object {
+class Connector(val token: String) {
+    companion object: WithLogging() {
         val URL_START = "http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com"
     }
     inline fun <reified T : Any> get(url: String): T {
-
-        //        val html: String = JdkRequest(URL_START())
-        //                .uri().path(url).queryParam("id", 333).back()
-        //                .method(Request.GET)
-        //                //.header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML)
-        //                .fetch()
-        //                .`as`(RestResponse::class.java)
-        ////                        .assertStatus(HttpURLConnection.HTTP_OK)
-        //                        .body();
-
         val obj: URL = URL(URL_START + url);
         val con: HttpURLConnection = obj.openConnection() as HttpURLConnection;
-
         // optional default is GET
-        con.setRequestMethod("GET");
-
+        con.requestMethod = "GET";
         //add request header
-        //        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("OB-TOKEN-V1", token);
 
-        val responseCode: Int = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+        val responseCode: Int = con.responseCode;
+        logger.debug("Sending 'GET' request to URL : " + url);
+        logger.debug("Response Code : " + responseCode);
 
         val inBuffer : BufferedReader = BufferedReader(
-                InputStreamReader(con.getInputStream()));
+                InputStreamReader(con.inputStream));
         var inputLine: String?;
         val response: StringBuffer = StringBuffer();
 
@@ -49,11 +36,8 @@ class Connector(token: String) {
         }
         inBuffer.close();
 
-        //print result
-        System.out.println(response.toString());
-        val builder = GsonBuilder()
-        val gson = builder.create()
-        val result = gson.fromJson<T>(response.toString())
+        logger.debug("response: " + response.toString());
+        val result = GsonBuilder().create().fromJson<T>(response.toString())
         return result
     }
 }
