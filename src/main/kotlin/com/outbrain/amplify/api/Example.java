@@ -1,6 +1,8 @@
 package com.outbrain.amplify.api;
 
 
+import com.outbrain.amplify.api.data.Marketer;
+
 public class Example {
 
 

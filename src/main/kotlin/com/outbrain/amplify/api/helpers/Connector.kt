@@ -1,15 +1,20 @@
 package com.outbrain.amplify.api.helpers
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.outbrain.amplify.api.data.Marketer
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import com.github.salomonbrys.kotson.fromJson
+
 
 class Connector(token: String) {
-    private val URL_START = "http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com"
-    fun get(url: String): Marketer {
+    companion object {
+        val URL_START = "http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com"
+    }
+    inline fun <reified T : Any> get(url: String): T {
+
         //        val html: String = JdkRequest(URL_START())
         //                .uri().path(url).queryParam("id", 333).back()
         //                .method(Request.GET)
@@ -46,7 +51,9 @@ class Connector(token: String) {
 
         //print result
         System.out.println(response.toString());
-        val result = Gson().fromJson(response.toString(), Marketer::class.java)
+        val builder = GsonBuilder()
+        val gson = builder.create()
+        val result = gson.fromJson<T>(response.toString())
         return result
     }
 }
