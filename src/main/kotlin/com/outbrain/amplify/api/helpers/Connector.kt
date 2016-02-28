@@ -2,6 +2,7 @@ package com.outbrain.amplify.api.helpers
 
 import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.GsonBuilder
+import com.outbrain.amplify.api.AmplifyApiException
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -37,6 +38,9 @@ class Connector(val token: String) {
         inBuffer.close();
 
         logger.debug("response: " + response.toString());
+        if (responseCode < 200 || responseCode > 299) {
+            throw AmplifyApiException("http request failed, status '$responseCode' reposnse: '${response.toString()}'")
+        }
         val result = GsonBuilder().create().fromJson<T>(response.toString())
         return result
     }
