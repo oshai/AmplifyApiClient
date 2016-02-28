@@ -11,7 +11,6 @@ public class Example {
     AmplifyApiClient api = new AmplifyApiClient("42");
                           // /marketers/{id}.get
     Marketer marketer = api.marketers().id("id").get();
-
     System.out.println(marketer);
   }
 }

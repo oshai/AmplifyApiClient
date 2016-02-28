@@ -1,6 +1,7 @@
 package com.outbrain.amplify.api
 
 import com.outbrain.amplify.api.data.Marketer
+import com.outbrain.amplify.api.data.UpdateMarketer
 import com.outbrain.amplify.api.helpers.Connector
 
 
@@ -26,6 +27,10 @@ class AmplifyApiClient(token: String) {
     inner class MarketerId(parentPath: String, id: String): ApiBase("$parentPath/$id") {
         fun get(): Marketer {
             return connector.get(path)
+        }
+
+        fun update(updateMarketer: UpdateMarketer): Marketer {
+            return connector.put(path, updateMarketer)
         }
 
     }
