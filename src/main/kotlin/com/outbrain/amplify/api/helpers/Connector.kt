@@ -25,7 +25,7 @@ class Connector(val token: String) {
         val inBuffer: BufferedReader = BufferedReader(
                 InputStreamReader(con.inputStream));
         var inputLine: String?;
-        val response: StringBuffer = StringBuffer();
+        val response: StringBuffer = StringBuffer()
         inputLine = inBuffer.readLine()
         while ((inputLine) != null) {
             response.append(inputLine);
