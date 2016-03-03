@@ -10,3 +10,5 @@ data class Marketer(val id: String,
 data class BlockedPublisher(val id: String)
 
 data class UpdateMarketer(val blockedPublishers: List<BlockedPublisher>)
+
+data class MarketersList(val count: Int, val marketers: List<Marketer>)
