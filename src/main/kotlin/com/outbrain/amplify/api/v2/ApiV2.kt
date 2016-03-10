@@ -3,12 +3,15 @@ package com.outbrain.amplify.api.v2
 import com.outbrain.amplify.api.data.*
 import com.outbrain.amplify.api.helpers.Connector
 
-class ApiV2(token: String) {
-    private val connector = Connector(token)
+object AmplifyApiFactory {
+    fun api(token: String): ApiV2.apiObject = ApiV2(Connector(token, "https://api.outbrain.com/amplify/v0.1/")).apiObject()
+    fun apiary(token: String): ApiV2.apiObject = ApiV2(Connector(token, "http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com")).apiObject()
+}
+class ApiV2 internal constructor(protected val connector: Connector) {
 
     open class ApiBase(protected val path: String)
 
-    inner class apiari {
+    inner class apiObject {
         operator fun div(m: marketers) = OngoingRest_marketers()
         operator fun div(b: budgets) = OngoingRest_budgets()
     }

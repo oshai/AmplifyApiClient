@@ -10,10 +10,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class Connector(val token: String) {
-    companion object: WithLogging() {
-        val URL_START = "http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com"
-    }
+class Connector(val token: String, val urlStart: String) {
+    companion object: WithLogging()
+
     inline fun <reified T : Any> get(url: String): T {
         val con: HttpURLConnection = getConnection(url)
         return consumeResponse(con)
@@ -41,10 +40,11 @@ class Connector(val token: String) {
         return result
     }
 
+    @Suppress("NOTHING_TO_INLINE")
     inline fun getConnection(url: String): HttpURLConnection {
-        val obj: URL = URL(URL_START + url);
+        val obj: URL = URL(urlStart + url);
         val con: HttpURLConnection = obj.openConnection() as HttpURLConnection;
-        logger.debug("Sending request to URL : $URL_START$url")
+        logger.debug("Sending request to URL : $urlStart$url")
         con.setRequestProperty("OB-TOKEN-V1", token)
         con.setRequestProperty("Content-Type", "application/json")
         return con
