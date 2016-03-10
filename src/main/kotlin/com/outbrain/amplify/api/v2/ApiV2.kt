@@ -28,6 +28,11 @@ class ApiV2(token: String) {
     }
     inner class OngoingRest_marketers_id_budgets(path: String): ApiBase("$path/budgets") {
         operator fun minus(get: GET) : BudgetsList = connector.get(path)
+        operator fun minus(create: CREATE) = OngoingRest_marketers_id_budgets_create(path)
+    }
+
+    inner class OngoingRest_marketers_id_budgets_create(path: String): ApiBase(path) {
+        operator fun minus(createBudget: CreateBudget) : BudgetsList = connector.post(path, createBudget)
     }
 
     inner class OngoingRest_budgets: ApiBase("/budgets") {

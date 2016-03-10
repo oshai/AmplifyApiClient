@@ -25,4 +25,13 @@ data class UpdateBudget(val amount: Float? = null,
                         val runForever: Boolean? = null,
                         val dailyTarget: Float? = null)
 
+data class CreateBudget(val name: String,
+                        val amount: Float,
+                        val startDate: String,
+                        val endDate: String? = null,
+                        val runForever: Boolean? = null,
+                        val type: String,
+                        val pacing: String,
+                        val dailyTarget: Float? = null)
+
 data class BudgetsList(val count: Int, val budgets: List<Budget>)

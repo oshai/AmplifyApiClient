@@ -20,19 +20,20 @@ class Connector(val token: String) {
     }
 
     inline fun <reified T : Any> consumeResponse(con: HttpURLConnection): T {
-        val responseCode: Int = con.responseCode;
-        logger.debug("Response Code : " + responseCode);
+        val responseCode: Int = con.responseCode
+        logger.debug("Response Code : " + responseCode)
         val inBuffer: BufferedReader = BufferedReader(
-                InputStreamReader(con.inputStream));
-        var inputLine: String?;
+                InputStreamReader(con.inputStream))
+        var inputLine: String?
         val response: StringBuffer = StringBuffer()
-        inputLine = inBuffer.readLine()
-        while ((inputLine) != null) {
-            response.append(inputLine);
+        inBuffer.use {
             inputLine = inBuffer.readLine()
+            while ((inputLine) != null) {
+                response.append(inputLine);
+                inputLine = inBuffer.readLine()
+            }
         }
-        inBuffer.close();
-        logger.debug("response: " + response.toString());
+        logger.debug("response: " + response.toString())
         if (responseCode < 200 || responseCode > 299) {
             throw AmplifyApiException("http request failed, status '$responseCode' reposnse: '${response.toString()}'")
         }
@@ -44,23 +45,25 @@ class Connector(val token: String) {
         val obj: URL = URL(URL_START + url);
         val con: HttpURLConnection = obj.openConnection() as HttpURLConnection;
         logger.debug("Sending request to URL : $URL_START$url")
-        con.setRequestProperty("OB-TOKEN-V1", token);
+        con.setRequestProperty("OB-TOKEN-V1", token)
+        con.setRequestProperty("Content-Type", "application/json")
         return con
     }
 
-    inline fun <reified T : Any, D> put(url: String, data: D): T {
+    inline fun <reified T : Any, D> post(url: String, data: D): T = doWithBody(url, data, "POST")
+    inline fun <reified T : Any, D> put(url: String, data: D): T = doWithBody(url, data, "PUT")
+
+    inline fun <reified T : Any, D> doWithBody(url: String, data: D, method: String): T {
         val con: HttpURLConnection = getConnection(url)
-        con.requestMethod = "PUT";
-        logger.debug("Sending 'PUT' request")
-//        con.setRequestProperty("User-Agent", USER_AGENT);
-//        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        con.requestMethod = method
+        logger.debug("Sending '$method' request")
         val urlParameters: String = GsonBuilder().setPrettyPrinting().create().toJson(data)
         logger.debug("body is $urlParameters")
         con.doOutput = true;
-        val wr: DataOutputStream = DataOutputStream(con.outputStream);
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
+        val wr: DataOutputStream = DataOutputStream(con.outputStream)
+        wr.writeBytes(urlParameters)
+        wr.flush()
+        wr.close()
         return consumeResponse(con)
     }
 }
