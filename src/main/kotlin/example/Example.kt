@@ -14,14 +14,14 @@ fun main(args : Array<String>) {
             api/ marketers /"marketer_id" - UPDATE - UpdateMarketer(listOf(BlockedPublisher("1"))),
             api/ marketers /"marketer_id"/ budgets - GET,
             api/ marketers /"marketer_id"/ budgets - CREATE - CreateBudget(name = "new budget",
-                    amount = 1F,
+                    amount = 1.0,
                     startDate = "2014-01-15",
                     runForever = true,
-                    type = "MONTHLY",
-                    pacing = "AUTOMATIC"),
+                    type = BudgetType.MONTHLY,
+                    pacing = PacingType.AUTOMATIC),
 
             api/ budgets /"budget_id" - GET,
-            api/ budgets /"budget_id" - UPDATE - UpdateBudget(amount = 100F)
+            api/ budgets /"budget_id" - UPDATE - UpdateBudget(amount = 100.0)
     ))
 
 }
