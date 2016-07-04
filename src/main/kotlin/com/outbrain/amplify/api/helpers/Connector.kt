@@ -3,6 +3,7 @@ package com.outbrain.amplify.api.helpers
 import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.GsonBuilder
 import com.outbrain.amplify.api.AmplifyApiException
+import mu.WithLogging
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
