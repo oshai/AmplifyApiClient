@@ -3,7 +3,7 @@ package com.outbrain.amplify.api.helpers
 import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.GsonBuilder
 import com.outbrain.amplify.api.AmplifyApiException
-import mu.WithLogging
+import mu.KLogging
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
@@ -12,7 +12,7 @@ import java.net.URL
 
 
 class Connector(val token: String, val urlStart: String) {
-    companion object: WithLogging()
+    companion object: KLogging()
 
     inline fun <reified T : Any> get(url: String): T {
         val con: HttpURLConnection = getConnection(url)
