@@ -7,6 +7,13 @@
     <groupId>com.outbrain</groupId>
     <artifactId>AmplifyApiClient</artifactId>
     <version>1.0-SNAPSHOT</version>
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>bintray</name>
+      <url>http://jcenter.bintray.com</url>
+    </repository>
+  </repositories>
     <build>
         <plugins>
             <plugin>
@@ -47,7 +54,7 @@
         <dependency>
             <groupId>microutils</groupId>
             <artifactId>kotlin.logging</artifactId>
-            <version>1.2</version>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
