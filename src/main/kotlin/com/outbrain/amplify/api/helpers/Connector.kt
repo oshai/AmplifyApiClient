@@ -46,8 +46,8 @@ class Connector(val token: String?, val urlStart: String, val authorization: Str
         val obj: URL = URL(urlStart + url);
         val con: HttpURLConnection = obj.openConnection() as HttpURLConnection;
         logger.debug("Sending request to URL : $urlStart$url")
-        token?.let {t -> con.setRequestProperty("OB-TOKEN-V1", t) }
-        authorization?.let {t -> con.setRequestProperty("Authorization", t) }
+        if (token != null) con.setRequestProperty("OB-TOKEN-V1", token)
+        if (authorization != null) con.setRequestProperty("Authorization", authorization)
         con.setRequestProperty("Content-Type", "application/json")
         return con
     }
