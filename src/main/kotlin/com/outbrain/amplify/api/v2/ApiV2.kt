@@ -2,11 +2,21 @@ package com.outbrain.amplify.api.v2
 
 import com.outbrain.amplify.api.data.*
 import com.outbrain.amplify.api.helpers.Connector
+import java.util.*
 
 object AmplifyApiFactory {
-    fun api(token: String): ApiV2.apiObject = ApiV2(Connector(token, "https://api.outbrain.com/amplify/v0.1/")).apiObject()
-    fun apiary(token: String): ApiV2.apiObject = ApiV2(Connector(token, "http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com")).apiObject()
+    private val apiUrl = "https://api.outbrain.com/amplify/v0.1"
+    private val apiaryUrl = "https://private-anon-44e44985a6-amplifyv01.apiary-mock.com"
+    fun api(token: String): ApiV2.apiObject = ApiV2(Connector(token, apiUrl, null)).apiObject()
+    fun apiary(token: String): ApiV2.apiObject = ApiV2(Connector(token, apiaryUrl, null)).apiObject()
+    fun login(user: String, password: String): Token = login(user, password, apiUrl)
+    fun demoLogin(user: String, password: String): Token = login(user, password, apiaryUrl)
+
+    private fun login(user: String, password: String, url: String): Token =
+            Connector(null, url,
+                    "Basic ${Base64.getEncoder().encodeToString("$user:$password".toByteArray())}").get("/login")
 }
+
 class ApiV2 internal constructor(protected val connector: Connector) {
 
     open class ApiBase(protected val path: String)
@@ -15,6 +25,7 @@ class ApiV2 internal constructor(protected val connector: Connector) {
         operator fun div(m: marketers) = OngoingRest_marketers()
         operator fun div(b: budgets) = OngoingRest_budgets()
     }
+
 
     inner class OngoingRest_marketers: ApiBase("/marketers") {
         operator fun div(id: String) = OngoingRest_marketers_id(path, id)

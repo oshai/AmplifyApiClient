@@ -6,7 +6,7 @@ import com.outbrain.amplify.api.helpers.Connector
 
 
 class AmplifyApiClient(token: String) {
-    private val connector = Connector(token,"http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com")
+    private val connector = Connector(token,"http://private-anon-d88a09c6c-amplifyv01.apiary-mock.com", null)
     open class ApiBase(protected val path: String)
 
     fun marketers(): Marketers {

@@ -6,8 +6,8 @@ import com.outbrain.amplify.api.v2.*
 
 fun main(args : Array<String>) {
     System.setProperty("org.slf4j.simpleLogger.defaultLogLevel","debug")
-    val token = "42"
-    val api = AmplifyApiFactory.apiary(token)
+    val token = AmplifyApiFactory.demoLogin("user", "password")
+    val api = AmplifyApiFactory.apiary(token.`OB-TOKEN-V1`)
     println(listOf(
             api/ marketers - GET,
             api/ marketers /"marketer_id" - GET,

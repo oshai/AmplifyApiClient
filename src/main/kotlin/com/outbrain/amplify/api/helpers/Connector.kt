@@ -11,7 +11,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class Connector(val token: String, val urlStart: String) {
+class Connector(val token: String?, val urlStart: String, val authorization: String?) {
     companion object: KLogging()
 
     inline fun <reified T : Any> get(url: String): T {
@@ -46,7 +46,8 @@ class Connector(val token: String, val urlStart: String) {
         val obj: URL = URL(urlStart + url);
         val con: HttpURLConnection = obj.openConnection() as HttpURLConnection;
         logger.debug("Sending request to URL : $urlStart$url")
-        con.setRequestProperty("OB-TOKEN-V1", token)
+        token?.let {t -> con.setRequestProperty("OB-TOKEN-V1", t) }
+        authorization?.let {t -> con.setRequestProperty("Authorization", t) }
         con.setRequestProperty("Content-Type", "application/json")
         return con
     }
